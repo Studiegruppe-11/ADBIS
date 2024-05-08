@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Sti til backend-ruter
-app.use('/api', require('./server/routes'));
+app.use('/api', require('./server/routes/orders'));
 
 // Start serveren
 const port = process.env.PORT || 3000;
