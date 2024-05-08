@@ -1,5 +1,4 @@
 //root/server.js
-
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -17,14 +16,15 @@ const db = new sqlite3.Database('./mydatabase.db', (err) => {
   }
 });
 
+// Funktion til at oprette tabeller i databasen. Kører filen create_tables.sql
 function initializeDatabase() {
   const sqlSchema = fs.readFileSync('./sql/create_tables.sql', 'utf8');
   db.exec(sqlSchema, (error) => {
-    if (error) {
-      console.error('Failed to create tables', error);
-    } else {
-      console.log('Tables created successfully');
-    }
+      if (error) {
+          console.error('Failed to create tables', error);
+      } else {
+          console.log('Tables created successfully');
+      }
   });
 }
 
@@ -34,9 +34,14 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/api/orders', require('./server/routes/orders'));
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index1.html'));
+  res.sendFile(path.join(__dirname, 'public', 'order.html'));
+});
+app.use('/api/orders', require('./server/routes/orders')); // Brug den opdaterede route fil
+
+// Frontend route
+app.get('/orders', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'order.html')); // Tjener den opdaterede HTML fil
 });
 
 // Server setup
@@ -44,6 +49,7 @@ const port = 3000;
 app.listen(port, () => {
     console.log(`Serveren kører på http://localhost:${port}`);
 });
+
 
 
 
@@ -84,14 +90,6 @@ app.listen(port, () => {
 //   }
 //   console.log('Close the database connection.');
 // });
-
-
-
-
-
-
-
-
 
 // // Middleware
 // app.use(bodyParser.urlencoded({ extended: true }));

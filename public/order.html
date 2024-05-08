@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestilling</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bestilling</h1>
+    </header>
+    <div class="container">
+        <form id="orderForm">
+            <div>
+                <label for="eventName">Navn på arrangement</label>
+                <input type="text" id="eventName" name="eventName" required>
+            </div>
+            <div>
+                <label for="startTime">Starttidspunkt</label>
+                <input type="time" id="startTime" name="startTime" required>
+            </div>
+            <div>
+                <label for="endTime">Sluttidspunkt</label>
+                <input type="time" id="endTime" name="endTime" required>
+            </div>
+            <div>
+                <label for="servingTime">Serveringstidspunkt</label>
+                <input type="time" id="servingTime" name="servingTime" required>
+            </div>
+            <div>
+                <label for="date">Dato</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div>
+                <label for="guests">Antal personer</label>
+                <input type="number" id="guests" name="guests" required>
+            </div>
+            <div class="menu">
+                <label for="menu1">Menu 1 - Den traditionelle</label>
+                <select id="menu1" name="menu1">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <!-- Flere options efter behov -->
+                </select>
+            </div>
+            <div class="menu">
+                <label for="menu2">Menu 2 - Den vegetariske</label>
+                <select id="menu2" name="menu2">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <!-- Flere options efter behov -->
+                </select>
+            </div>
+            <div class="menu">
+                <label for="menu3">Menu 3 - Den m. fisk til forret</label>
+                <select id="menu3" name="menu3">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <!-- Flere options efter behov -->
+                </select>
+            </div>
+            <button type="submit">Opret ordre</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
