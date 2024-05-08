@@ -1,0 +1,33 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Booking System</h1>
+  
+  <form id="bookingForm">
+    <label for="date">Dato:</label>
+    <input type="date" id="date" name="date" required><br><br>
+    
+    <label for="time">Tidspunkt:</label>
+    <input type="time" id="time" name="time" required><br><br>
+    
+    <label for="guests">Antal gæster:</label>
+    <input type="number" id="guests" name="guests" required><br><br>
+    
+    <label for="specialRequests">Særlige ønsker:</label><br>
+    <textarea id="specialRequests" name="specialRequests" rows="4" cols="50"></textarea><br><br>
+    
+    <!-- Her kan du tilføje yderligere inputfelter efter behov, f.eks. til menuvalg -->
+    
+    <input type="submit" value="Bestil">
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,24 +1,21 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const path = require('path');
+const bodyParser = require('body-parser');
 
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
+// Sti til frontend-filer
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Sti til backend-ruter
+app.use('/api', require('./server/routes'));
 
-
-
-// Definerer en simpel rute
-app.get('/', (req, res) => {
-  res.send('Hej verden!');
-});
-
-
-
-
-
-
-
-// Starter serveren
+// Start serveren
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Serveren kører på http://localhost:${port}`);
 });
+
