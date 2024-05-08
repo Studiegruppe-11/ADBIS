@@ -10,8 +10,19 @@ app.use(bodyParser.json());
 // Sti til frontend-filer
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Sti til backend-ruter
 app.use('/api', require('./server/routes/orders'));
+
+
+// Startside route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index1.html'));
+  });
+
+
+
+
 
 // Start serveren
 const port = process.env.PORT || 3000;
