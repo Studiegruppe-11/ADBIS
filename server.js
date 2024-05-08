@@ -1,4 +1,9 @@
 //root/server.js
+
+
+// OBS: HAR SAT DEN TIL AT DROPPE TABLES VED HVER RESTART AF SERVEREN
+
+
 const express = require('express');
 const app = express();
 const path = require('path');
