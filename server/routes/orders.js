@@ -132,31 +132,59 @@ router.get('/order-room', (req, res) => {
   });
 });
 
-// endpoint til at se alle opgaver
+// Endpoint til at hente alle opgaver med lokaler
 router.get('/tasks', (req, res) => {
-  db.all('SELECT * FROM tasks ORDER BY date, startTime', (error, tasks) => {
-      if (error) {
-          console.error('Error retrieving tasks:', error);
-          res.status(500).json({ error: 'Failed to retrieve tasks' });
-      } else {
-          res.json(tasks);
-      }
+  const query = `
+    SELECT tasks.*, rooms.roomId 
+    FROM tasks 
+    JOIN orderTasks ON tasks.taskId = orderTasks.taskId
+    JOIN orders ON orderTasks.orderId = orders.id
+    JOIN orderRoom ON orders.id = orderRoom.orderId
+    JOIN rooms ON orderRoom.roomId = rooms.roomId
+    ORDER BY tasks.date, tasks.startTime;
+  `;
+
+  db.all(query, (error, results) => {
+    if (error) {
+      console.error('Error retrieving tasks with rooms:', error);
+      res.status(500).json({ error: 'Failed to retrieve tasks with rooms' });
+    } else {
+      res.json(results);
+    }
   });
 });
 
-// endpoint til at markere en opgave som udført
-router.post('/tasks/:taskId/complete', (req, res) => {
-  const { taskId } = req.params;
-  const updateQuery = 'UPDATE tasks SET completed = 1 WHERE taskId = ?';
-  db.run(updateQuery, [taskId], function(err) {
-      if (err) {
-          console.error('Error completing task:', err);
-          res.status(500).json({ error: 'Failed to complete task' });
-      } else {
-          res.json({ message: 'Task completed successfully' });
-      }
+// Endpoint til at markere en opgave som udført
+
+// Endpoint til at toggle opgavens fuldførelse
+router.post('/tasks/:taskId/toggle', (req, res) => {
+  const taskId = req.params.taskId;
+  const toggleQuery = 'UPDATE tasks SET completed = NOT completed WHERE taskId = ?';
+
+  db.run(toggleQuery, taskId, function(err) {
+    if (err) {
+      console.error('Error toggling task completion:', err);
+      res.status(500).json({ error: 'Failed to toggle task completion' });
+    } else {
+      res.json({ message: 'Task toggled successfully', taskId: taskId });
+    }
   });
 });
+
+
+// // endpoint til at markere en opgave som udført
+// router.post('/tasks/:taskId/complete', (req, res) => {
+//   const { taskId } = req.params;
+//   const updateQuery = 'UPDATE tasks SET completed = 1 WHERE taskId = ?';
+//   db.run(updateQuery, [taskId], function(err) {
+//       if (err) {
+//           console.error('Error completing task:', err);
+//           res.status(500).json({ error: 'Failed to complete task' });
+//       } else {
+//           res.json({ message: 'Task completed successfully' });
+//       }
+//   });
+// });
 
 
 

@@ -65,7 +65,6 @@ app.get('/api/tasks', (req, res) => {
   });
 });
 
-
 const port = 3000;
 app.listen(port, () => {
     console.log(`Serveren kører på http://localhost:${port}`);
