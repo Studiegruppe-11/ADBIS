@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Bestilling</h1>
+        <h1>DI - Bestilling</h1>
         <div class="right-header">
             <span>Har du spørgsmål? Ring op til: +45 33773377</span>
             <div class="user-info">
@@ -19,31 +19,31 @@
     </header>
     <div class="container">
         <form id="orderForm">
-            <div>
+            <div class="event-info">
                 <label for="eventName">Navn på arrangement</label>
                 <input type="text" id="eventName" name="eventName" required>
             </div>
-            <div>
-                <label for="startTime">Starttidspunkt</label>
-                <input type="time" id="startTime" name="startTime" required>
-            </div>
-            <div>
-                <label for="endTime">Sluttidspunkt</label>
-                <input type="time" id="endTime" name="endTime" required>
-            </div>
-            <div>
-                <label for="servingTime">Serveringstidspunkt</label>
-                <input type="time" id="servingTime" name="servingTime" required>
-            </div>
-            <div>
+            <div class="date-info">
                 <label for="date">Dato</label>
                 <input type="date" id="date" name="date" required>
             </div>
-            <div>
+            <div class="guests-info">
                 <label for="guests">Antal personer</label>
                 <input type="number" id="guests" name="guests" required>
             </div>
-            <div class="menu">
+            <div class="start-info">
+                <label for="startTime">Starttidspunkt</label>
+                <input type="time" id="startTime" name="startTime" required>
+            </div>
+            <div class="end-info">
+                <label for="endTime">Sluttidspunkt</label>
+                <input type="time" id="endTime" name="endTime" required>
+            </div>
+            <div class="serving-info">
+                <label for="servingTime">Serveringstidspunkt</label>
+                <input type="time" id="servingTime" name="servingTime" required>
+            </div>
+            <div class="menu menu1">
                 <label for="menu1">Menu 1 - Den traditionelle</label>
                 <select id="menu1" name="menu1">
                     <option value="0">0</option>
@@ -52,7 +52,7 @@
                     <!-- Flere options efter behov -->
                 </select>
             </div>
-            <div class="menu">
+            <div class="menu menu2">
                 <label for="menu2">Menu 2 - Den vegetariske</label>
                 <select id="menu2" name="menu2">
                     <option value="0">0</option>
@@ -61,7 +61,7 @@
                     <!-- Flere options efter behov -->
                 </select>
             </div>
-            <div class="menu">
+            <div class="menu menu3">
                 <label for="menu3">Menu 3 - Den m. fisk til forret</label>
                 <select id="menu3" name="menu3">
                     <option value="0">0</option>
