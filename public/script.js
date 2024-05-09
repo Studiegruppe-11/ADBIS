@@ -1,5 +1,5 @@
 document.getElementById('orderForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Forhindrer standard formularindsendelse
+    event.preventDefault();  // Forhindrer standard formularindsendelse
 
     // Samler data fra formularen
     const formData = {
@@ -22,13 +22,19 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
         },
         body: JSON.stringify(formData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {  // Håndterer ikke-okay respons fra serveren
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Success:', data);
-        alert('Ordre oprettet!'); // Viser en bekræftelsesbesked
+        document.getElementById('responseMessage').textContent = data.message; // Viser succesmeddelelse
+        document.getElementById('responseMessage').style.color = 'green'; // Skifter tekstfarve til grøn ved succes
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert('Fejl ved oprettelse af ordre.'); // Viser en fejlbesked
+        document.getElementById('responseMessage').textContent = 'Fejl ved oprettelse af ordre: ' + error.message; // Viser fejlmeddelelse
     });
 });

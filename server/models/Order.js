@@ -1,4 +1,4 @@
-// server/models/Order.js
+// /server/models/Order.js
 class Order {
     constructor(id, date, time, guests, specialRequests, menu) {
       this.id = id;
