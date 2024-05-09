@@ -1,9 +1,6 @@
 //root/server.js
-
-
 // OBS: HAR SAT DEN TIL AT DROPPE TABLES VED HVER RESTART AF SERVEREN (hvis vi skal ændre i kolonner)
 // Special requests mangler i frontend, men kolonne er i databasen
-
 
 const express = require('express');
 const app = express();
@@ -22,7 +19,6 @@ const db = new sqlite3.Database('./mydatabase.db', (err) => {
   }
 });
 
-// Funktion til at oprette tabeller i databasen. Kører filen create_tables.sql
 function initializeDatabase() {
   const sqlSchema = fs.readFileSync('./sql/create_tables.sql', 'utf8');
   db.exec(sqlSchema, (error) => {
@@ -34,31 +30,43 @@ function initializeDatabase() {
   });
 }
 
-// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));
 });
 
-app.use('/api/orders', require('./server/routes/orders')); // Brug den opdaterede route fil
+app.use('/api/orders', require('./server/routes/orders')); // Inkluderer routes for ordre
 
-// Frontend route
 app.get('/orders', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'order.html')); // Tjener den opdaterede HTML fil
+    res.sendFile(path.join(__dirname, 'public', 'order.html'));
 });
 app.get('/rooms', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'rooms.html')); // Tjener den opdaterede HTML fil
+    res.sendFile(path.join(__dirname, 'public', 'rooms.html'));
 });
 app.get('/orderroom', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'orderRoom.html')); // Tjener den opdaterede HTML fil
+    res.sendFile(path.join(__dirname, 'public', 'orderRoom.html'));
+});
+app.get('/tasks', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'tasks.html'));
 });
 
-// Server setup
-const port = 3000; 
+// Endpoint til at hente alle opgaver
+app.get('/api/tasks', (req, res) => {
+  db.all('SELECT * FROM tasks ORDER BY date, startTime', (error, tasks) => {
+      if (error) {
+          console.error('Error retrieving tasks:', error);
+          res.status(500).json({ error: 'Failed to retrieve tasks' });
+      } else {
+          res.json(tasks);
+      }
+  });
+});
+
+
+const port = 3000;
 app.listen(port, () => {
     console.log(`Serveren kører på http://localhost:${port}`);
 });

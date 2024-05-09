@@ -5,6 +5,43 @@ const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('./mydatabase.db');
 
+// Relateret til opgaver
+const createTasksForOrder = (orderId, date, startTime, endTime, servingTime) => {
+  // Sørg for, at tiderne er korrekt formateret
+  const eventDate = new Date(date);
+  const startDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + startTime + 'Z').getTime());
+  const endDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + endTime + 'Z').getTime());
+  const servingDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + servingTime + 'Z').getTime());
+
+  const preServiceTime = new Date(startDateTime.getTime() - 15 * 60000).toTimeString().substring(0, 5);
+  const postServiceTime = new Date(endDateTime.getTime() + 10 * 60000).toTimeString().substring(0, 5);
+
+  const tasks = [
+    { description: "Klargøring af lokale inkl. bordopdækning", time: preServiceTime },
+    { description: "Vand klar på bordene", time: startTime },
+    { description: "Servere frokost", time: servingTime },
+    { description: "Rengøring af lokale", time: postServiceTime }
+  ];
+
+  tasks.forEach(task => {
+    const insertTaskQuery = 'INSERT INTO tasks (description, startTime, endTime, date) VALUES (?, ?, ?, ?)';
+    db.run(insertTaskQuery, [task.description, task.time, task.time, date], function(err) {
+      if (err) {
+        console.error('Error creating task:', err);
+      } else {
+        const taskId = this.lastID;
+        const linkTaskQuery = 'INSERT INTO orderTasks (orderId, taskId) VALUES (?, ?)';
+        db.run(linkTaskQuery, [orderId, taskId], function(linkErr) {
+          if (linkErr) {
+            console.error('Error linking task to order:', linkErr);
+          }
+        });
+      }
+    });
+  });
+};
+
+
 router.post('/', (req, res) => {
   const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3 } = req.body;
   
@@ -46,6 +83,8 @@ router.post('/', (req, res) => {
                           console.error('Error linking room to order:', linkError);
                           res.status(500).json({ error: 'Error linking room to order' });
                       } else {
+                          // Her oprettes opgaver for den nyligt oprettede ordre
+                          createTasksForOrder(orderId, date, startTime, endTime, servingTime);
                           res.status(200).json({ message: 'Order created and room allocated successfully', orderId: orderId, roomId: room.roomId });
                       }
                   });
@@ -55,6 +94,9 @@ router.post('/', (req, res) => {
   });
 });
 
+
+
+// Route til at hente alle ordrer
 router.get('/', (req, res) => {
     db.all('SELECT * FROM orders', (error, orders) => {
         if (error) {
@@ -89,5 +131,35 @@ router.get('/order-room', (req, res) => {
       }
   });
 });
+
+// endpoint til at se alle opgaver
+router.get('/tasks', (req, res) => {
+  db.all('SELECT * FROM tasks ORDER BY date, startTime', (error, tasks) => {
+      if (error) {
+          console.error('Error retrieving tasks:', error);
+          res.status(500).json({ error: 'Failed to retrieve tasks' });
+      } else {
+          res.json(tasks);
+      }
+  });
+});
+
+// endpoint til at markere en opgave som udført
+router.post('/tasks/:taskId/complete', (req, res) => {
+  const { taskId } = req.params;
+  const updateQuery = 'UPDATE tasks SET completed = 1 WHERE taskId = ?';
+  db.run(updateQuery, [taskId], function(err) {
+      if (err) {
+          console.error('Error completing task:', err);
+          res.status(500).json({ error: 'Failed to complete task' });
+      } else {
+          res.json({ message: 'Task completed successfully' });
+      }
+  });
+});
+
+
+
+
 
 module.exports = router;
