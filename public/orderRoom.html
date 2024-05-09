@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order-Room Relations</title>
+</head>
+<body>
+    <h1>Ordre og Lokale Relationer</h1>
+    <div id="orderRoom"></div>
+    <script>
+        fetch('/api/orders/order-room')
+        .then(response => response.json())
+        .then(orderRooms => {
+            const container = document.getElementById('orderRoom');
+            orderRooms.forEach(relation => {
+                const div = document.createElement('div');
+                div.textContent = `Order ID: ${relation.orderId}, Room ID: ${relation.roomId}, Date: ${relation.date}, Start Time: ${relation.startTime}, End Time: ${relation.endTime}`;
+                container.appendChild(div);
+            });
+        })
+        .catch(err => console.error('Error loading order-room relations:', err));
+    </script>
+</body>
+</html>

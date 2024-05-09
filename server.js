@@ -43,11 +43,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));
 });
+
 app.use('/api/orders', require('./server/routes/orders')); // Brug den opdaterede route fil
 
 // Frontend route
 app.get('/orders', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'order.html')); // Tjener den opdaterede HTML fil
+});
+app.get('/rooms', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'rooms.html')); // Tjener den opdaterede HTML fil
+});
+app.get('/orderroom', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'orderRoom.html')); // Tjener den opdaterede HTML fil
 });
 
 // Server setup

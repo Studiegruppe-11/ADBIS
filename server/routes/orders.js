@@ -66,5 +66,28 @@ router.get('/', (req, res) => {
     });
 });
 
+// Endpoint til at hente alle lokaler
+router.get('/rooms', (req, res) => {
+  db.all('SELECT * FROM rooms', (error, rooms) => {
+      if (error) {
+          console.error('Error retrieving rooms:', error);
+          res.status(500).json({ error: 'Failed to retrieve rooms' });
+      } else {
+          res.json(rooms);
+      }
+  });
+});
+
+// Endpoint til at hente alle ordre-lokale relationer
+router.get('/order-room', (req, res) => {
+  db.all('SELECT * FROM orderRoom', (error, orderRooms) => {
+      if (error) {
+          console.error('Error retrieving order-room relations:', error);
+          res.status(500).json({ error: 'Failed to retrieve order-room relations' });
+      } else {
+          res.json(orderRooms);
+      }
+  });
+});
 
 module.exports = router;
