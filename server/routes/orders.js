@@ -135,12 +135,10 @@ router.get('/order-room', (req, res) => {
 // Endpoint til at hente alle opgaver med lokaler
 router.get('/tasks', (req, res) => {
   const query = `
-    SELECT tasks.*, rooms.roomId 
+    SELECT tasks.*, orderRoom.roomId 
     FROM tasks 
     JOIN orderTasks ON tasks.taskId = orderTasks.taskId
-    JOIN orders ON orderTasks.orderId = orders.id
-    JOIN orderRoom ON orders.id = orderRoom.orderId
-    JOIN rooms ON orderRoom.roomId = rooms.roomId
+    JOIN orderRoom ON orderTasks.orderId = orderRoom.orderId
     ORDER BY tasks.date, tasks.startTime;
   `;
 
@@ -154,22 +152,26 @@ router.get('/tasks', (req, res) => {
   });
 });
 
+
 // Endpoint til at markere en opgave som udført
 
 // Endpoint til at toggle opgavens fuldførelse
 router.post('/tasks/:taskId/toggle', (req, res) => {
-  const taskId = req.params.taskId;
-  const toggleQuery = 'UPDATE tasks SET completed = NOT completed WHERE taskId = ?';
+  const { taskId } = req.params;
+  console.log(`Attempting to toggle task with ID: ${taskId}`);  // This should log when you attempt to toggle a task
 
-  db.run(toggleQuery, taskId, function(err) {
+  const query = 'UPDATE tasks SET completed = NOT completed WHERE taskId = ?';
+  db.run(query, [taskId], function(err) {
     if (err) {
       console.error('Error toggling task completion:', err);
       res.status(500).json({ error: 'Failed to toggle task completion' });
     } else {
+      console.log(`Task ${taskId} toggled successfully`);
       res.json({ message: 'Task toggled successfully', taskId: taskId });
     }
   });
 });
+
 
 
 // // endpoint til at markere en opgave som udført

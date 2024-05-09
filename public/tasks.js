@@ -18,12 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   
       function toggleTaskCompletion(taskId) {
+        console.log("Attempting to toggle completion for task", taskId); // Log which task is being toggled
         fetch(`/api/tasks/${taskId}/toggle`, { method: 'POST' })
           .then(response => {
             if (!response.ok) throw new Error('Failed to update task');
+            console.log(`Task ${taskId} updated successfully`); // Log successful update
             location.reload();  // Genindlæser siden for at vise den opdaterede opgavestatus
           })
-          .catch(error => alert('Fejl: ' + error.message));
+          .catch(error => {
+            console.error('Error toggling task:', error); // Log any errors that occur
+            alert('Fejl: ' + error.message);
+          });
       }
       
   });

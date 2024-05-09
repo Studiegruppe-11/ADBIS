@@ -38,7 +38,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));
 });
 
-app.use('/api/orders', require('./server/routes/orders')); // Inkluderer routes for ordre
+app.use('/api/orders', require('./server/routes/orders'));
+app.use('/api/tasks', require('./server/routes/orders'));
 
 app.get('/orders', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'order.html'));
