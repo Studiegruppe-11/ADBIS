@@ -81,18 +81,19 @@ border: 1px solid #ccc;
 }
 
 button {
-grid-column: span 2; /* Knappen strækker sig over begge kolonner */
-padding: 10px;
-background-color: #5c67f2;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 16px;
+    grid-column: 1 / -1; /* Knappen strækker sig over alle tre kolonner nederst */
+    padding: 10px;
+    background-color: #5c67f2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
 }
 
 button:hover {
-background-color: #4a54e1; /* Mørkere nuance ved hover */
+    background-color: #4a54e1;
 }
 
 .menu-container {
@@ -106,6 +107,8 @@ background-color: #4a54e1; /* Mørkere nuance ved hover */
     display: flex;
     flex-direction: column;
 }
+
+
 
 .right-header {
 display: flex;
