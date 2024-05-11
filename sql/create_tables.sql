@@ -60,8 +60,10 @@ CREATE TABLE IF NOT EXISTS orderTasks (
     orderTaskId INTEGER PRIMARY KEY AUTOINCREMENT,
     orderId INTEGER NOT NULL,
     taskId INTEGER NOT NULL,
+    roomId INTEGER NOT NULL,  -- Tilføjelse af roomId
     FOREIGN KEY (orderId) REFERENCES orders (id),
-    FOREIGN KEY (taskId) REFERENCES tasks (taskId)
+    FOREIGN KEY (taskId) REFERENCES tasks (taskId),
+    FOREIGN KEY (roomId) REFERENCES rooms (roomId)  -- Tilføjelse af fremmednøgle reference
 );
 
 -- Standardværdier til lokaler

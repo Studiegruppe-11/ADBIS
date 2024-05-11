@@ -6,93 +6,97 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./mydatabase.db');
 
 // Relateret til opgaver
-const createTasksForOrder = (orderId, date, startTime, endTime, servingTime) => {
-  // Sørg for, at tiderne er korrekt formateret
-  const eventDate = new Date(date);
-  const startDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + startTime + 'Z').getTime());
-  const endDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + endTime + 'Z').getTime());
-  const servingDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + servingTime + 'Z').getTime());
-
-  const preServiceTime = new Date(startDateTime.getTime() - 15 * 60000).toTimeString().substring(0, 5);
-  const postServiceTime = new Date(endDateTime.getTime() + 10 * 60000).toTimeString().substring(0, 5);
-
-  const tasks = [
-    { description: "Klargøring af lokale inkl. bordopdækning", time: preServiceTime },
-    { description: "Vand klar på bordene", time: startTime },
-    { description: "Servere frokost", time: servingTime },
-    { description: "Rengøring af lokale", time: postServiceTime }
-  ];
-
-  tasks.forEach(task => {
-    const insertTaskQuery = 'INSERT INTO tasks (description, startTime, endTime, date) VALUES (?, ?, ?, ?)';
-    db.run(insertTaskQuery, [task.description, task.time, task.time, date], function(err) {
-      if (err) {
-        console.error('Error creating task:', err);
-      } else {
-        const taskId = this.lastID;
-        const linkTaskQuery = 'INSERT INTO orderTasks (orderId, taskId) VALUES (?, ?)';
-        db.run(linkTaskQuery, [orderId, taskId], function(linkErr) {
-          if (linkErr) {
-            console.error('Error linking task to order:', linkErr);
+const createTasksForOrder = async (orderId, roomId, date, startTime, endTime, servingTime) => {
+    // Beregner tidspunkter som før
+    const eventDate = new Date(date);
+    const startDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + startTime + 'Z').getTime());
+    const endDateTime = new Date(eventDate.getTime() + new Date('1970-01-01T' + endTime + 'Z').getTime());
+  
+    const tasks = [
+      { description: "Klargøring af lokale inkl. bordopdækning", time: startDateTime.toTimeString().substring(0, 5) },
+      { description: "Vand klar på bordene", time: startDateTime.toTimeString().substring(0, 5) },
+      { description: "Servere frokost", time: servingTime },
+      { description: "Rengøring af lokale", time: endDateTime.toTimeString().substring(0, 5) }
+    ];
+  
+    for (const task of tasks) {
+      const insertTaskQuery = 'INSERT INTO tasks (description, startTime, endTime, date) VALUES (?, ?, ?, ?)';
+      await new Promise((resolve, reject) => {
+        db.run(insertTaskQuery, [task.description, task.time, task.time, date], function(err) {
+          if (err) {
+            console.error('Error creating task:', err);
+            reject(err);
+          } else {
+            const taskId = this.lastID;
+            const linkTaskQuery = 'INSERT INTO orderTasks (orderId, taskId, roomId) VALUES (?, ?, ?)';
+            db.run(linkTaskQuery, [orderId, taskId, roomId], (linkErr) => {
+              if (linkErr) {
+                console.error('Error linking task to order:', linkErr);
+                reject(linkErr);
+              } else {
+                resolve();
+              }
+            });
           }
         });
-      }
+      });
+    }
+  };
+  
+
+
+  router.post('/', async (req, res) => {  // Tilføj 'async' her
+    const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3 } = req.body;
+    
+    // Find et ledigt lokale
+    const findRoomQuery = `
+        SELECT roomId FROM rooms 
+        WHERE capacity >= ? AND roomId NOT IN (
+            SELECT roomId FROM orderRoom 
+            WHERE date = ? AND NOT (endTime <= ? OR startTime >= ?)
+        ) 
+        LIMIT 1;
+    `;
+  
+    db.get(findRoomQuery, [guests, date, startTime, endTime], async (error, room) => {  // Overvej 'async' her, hvis du bruger await indeni
+        if (error) {
+            console.error('Error finding available room:', error);
+            res.status(500).json({ error: 'Database error while finding room' });
+        } else if (!room) {
+            res.status(409).json({ error: 'No available rooms for the given number of guests and time slot' });
+        } else {
+            // Indsæt ordre og knyt til rum
+            const insertOrderQuery = `
+                INSERT INTO orders (eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+            `;
+            db.run(insertOrderQuery, [eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3], async function(orderError) {  // Overvej 'async' her, hvis du bruger await indeni
+                if (orderError) {
+                    console.error('Error creating order:', orderError);
+                    res.status(500).json({ error: 'Error creating order' });
+                } else {
+                    const orderId = this.lastID;
+                    // Link ordre til rum med dato
+                    const linkRoomOrderQuery = `
+                        INSERT INTO orderRoom (orderId, roomId, date, startTime, endTime)
+                        VALUES (?, ?, ?, ?, ?);
+                    `;
+                    db.run(linkRoomOrderQuery, [orderId, room.roomId, date, startTime, endTime], async function(linkError) {  // Overvej 'async' her, hvis du bruger await indeni
+                        if (linkError) {
+                            console.error('Error linking room to order:', linkError);
+                            res.status(500).json({ error: 'Error linking room to order' });
+                        } else {
+                            // Her oprettes opgaver for den nyligt oprettede ordre
+                            await createTasksForOrder(orderId, room.roomId, date, startTime, endTime, servingTime);  // Brug 'await' her
+                            res.status(200).json({ message: 'Order created and room allocated successfully', orderId: orderId, roomId: room.roomId });
+                        }
+                    });
+                }
+            });
+        }
     });
   });
-};
-
-
-router.post('/', (req, res) => {
-  const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3 } = req.body;
   
-  // Find et ledigt lokale
-  const findRoomQuery = `
-      SELECT roomId FROM rooms 
-      WHERE capacity >= ? AND roomId NOT IN (
-          SELECT roomId FROM orderRoom 
-          WHERE date = ? AND NOT (endTime <= ? OR startTime >= ?)
-      ) 
-      LIMIT 1;
-  `;
-
-  db.get(findRoomQuery, [guests, date, startTime, endTime], (error, room) => {
-      if (error) {
-          console.error('Error finding available room:', error);
-          res.status(500).json({ error: 'Database error while finding room' });
-      } else if (!room) {
-          res.status(409).json({ error: 'No available rooms for the given number of guests and time slot' });
-      } else {
-          // Indsæt ordre og knyt til rum
-          const insertOrderQuery = `
-              INSERT INTO orders (eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-          `;
-          db.run(insertOrderQuery, [eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3], function(orderError) {
-              if (orderError) {
-                  console.error('Error creating order:', orderError);
-                  res.status(500).json({ error: 'Error creating order' });
-              } else {
-                  const orderId = this.lastID;
-                  // Link ordre til rum med dato
-                  const linkRoomOrderQuery = `
-                      INSERT INTO orderRoom (orderId, roomId, date, startTime, endTime)
-                      VALUES (?, ?, ?, ?, ?);
-                  `;
-                  db.run(linkRoomOrderQuery, [orderId, room.roomId, date, startTime, endTime], function(linkError) {
-                      if (linkError) {
-                          console.error('Error linking room to order:', linkError);
-                          res.status(500).json({ error: 'Error linking room to order' });
-                      } else {
-                          // Her oprettes opgaver for den nyligt oprettede ordre
-                          createTasksForOrder(orderId, date, startTime, endTime, servingTime);
-                          res.status(200).json({ message: 'Order created and room allocated successfully', orderId: orderId, roomId: room.roomId });
-                      }
-                  });
-              }
-          });
-      }
-  });
-});
 
 
 
@@ -134,6 +138,7 @@ router.get('/order-room', (req, res) => {
 
 // endpoint til at se alle opgaver
 router.get('/tasks', (req, res) => {
+    console.log("Fetching tasks...")
     const query = `
         SELECT tasks.*, orderRoom.roomId FROM tasks 
         JOIN orderTasks ON tasks.taskId = orderTasks.taskId
@@ -146,6 +151,7 @@ router.get('/tasks', (req, res) => {
             console.error('Error retrieving tasks:', error);
             res.status(500).json({ error: 'Failed to retrieve tasks' });
         } else {
+            console.log('Tasks with room ID:', tasks);  // Se præcis hvad der returneres
             res.json(tasks);
         }
     });
@@ -164,6 +170,19 @@ router.post('/tasks/:taskId/complete', (req, res) => {
           res.json({ message: 'Task completed successfully' });
       }
   });
+});
+
+// Endpoint til at se opgaveOrdre tabel
+router.get('/order-tasks', (req, res) => {
+    const query = 'SELECT * FROM orderTasks';
+    db.all(query, (error, results) => {
+        if (error) {
+            console.error('Error retrieving order-tasks relations:', error);
+            res.status(500).json({ error: 'Failed to retrieve order-tasks relations' });
+        } else {
+            res.json(results);
+        }
+    });
 });
 
 module.exports = router;

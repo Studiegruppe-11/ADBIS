@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('/api/tasks')
         .then(response => response.json())
         .then(tasks => {
+            console.log('Tasks received:', tasks); 
             const taskList = document.getElementById('taskList');
             tasks.forEach(task => {
                 const li = document.createElement('li');
                 // Opdateret for at inkludere lokalenummer og opgavebeskrivelse
                 li.textContent = `Lokale ${task.roomId}: ${task.description} - ${task.date} kl. ${task.startTime}`;
-                console.log(task)
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = task.completed;
