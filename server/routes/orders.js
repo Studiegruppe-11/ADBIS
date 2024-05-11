@@ -134,15 +134,23 @@ router.get('/order-room', (req, res) => {
 
 // endpoint til at se alle opgaver
 router.get('/tasks', (req, res) => {
-  db.all('SELECT * FROM tasks ORDER BY date, startTime', (error, tasks) => {
-      if (error) {
-          console.error('Error retrieving tasks:', error);
-          res.status(500).json({ error: 'Failed to retrieve tasks' });
-      } else {
-          res.json(tasks);
-      }
-  });
+    const query = `
+        SELECT tasks.*, orderRoom.roomId FROM tasks 
+        JOIN orderTasks ON tasks.taskId = orderTasks.taskId
+        JOIN orders ON orderTasks.orderId = orders.id
+        JOIN orderRoom ON orders.id = orderRoom.orderId
+        ORDER BY tasks.date, tasks.startTime;
+    `;
+    db.all(query, (error, tasks) => {
+        if (error) {
+            console.error('Error retrieving tasks:', error);
+            res.status(500).json({ error: 'Failed to retrieve tasks' });
+        } else {
+            res.json(tasks);
+        }
+    });
 });
+
 
 // endpoint til at markere en opgave som udført
 router.post('/tasks/:taskId/complete', (req, res) => {
@@ -157,9 +165,5 @@ router.post('/tasks/:taskId/complete', (req, res) => {
       }
   });
 });
-
-
-
-
 
 module.exports = router;
