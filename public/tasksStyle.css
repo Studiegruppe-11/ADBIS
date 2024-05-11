@@ -1,0 +1,78 @@
+/* /public/styles.css */
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Ændret til kolonne-retning */
+    align-items: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    color: #6a5acd;
+    margin: 10px 0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+
+
+      /* Din eksisterende stil */
+      cursor: pointer; /* Tilføj denne linje for at ændre cursoren */
+      user-select: none; /* For at undgå tekstmarkering når man trækker */
+      touch-action: manipulation; /* For at forhindre scrollning på touch-enheder */
+}
+
+.completed {
+    pointer-events: none; /* Deaktivér klik på fuldførte opgaver */
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    background-color: #fff;
+    margin-right: 10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #6a5acd;
+    position: relative;
+}
+
+input[type="checkbox"]::before {
+    content: "\2714";
+    color: #fff;
+    position: absolute;
+    left: 5px;
+    top: -2px;
+    font-size: 20px;
+    cursor:grab;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #fff;
+    border-color: #6a5acd;
+}
+
+li.completed {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+

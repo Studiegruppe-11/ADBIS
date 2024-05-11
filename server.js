@@ -34,8 +34,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/orders', require('./server/routes/orderRoutes')); // Inkluderer routes for ordrer
-app.use('/api/tasks', require('./server/routes/taskRoutes')); // Inkluderer routes for opgaver
+app.use('/api/orders', require('./server/routes/orderRoutes')); 
+app.use('/api/tasks', require('./server/routes/taskRoutes')); 
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));

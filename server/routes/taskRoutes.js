@@ -10,11 +10,11 @@ const { createTasksForOrder } = require('../services/taskService');
 router.get('/tasks', (req, res) => {
     console.log("Fetching tasks...")
     const query = `
-    SELECT tasks.*, orderRoom.roomId FROM tasks 
-        JOIN orderTasks ON tasks.taskId = orderTasks.taskId
-        JOIN orders ON orderTasks.orderId = orders.id
-        JOIN orderRoom ON orders.id = orderRoom.orderId
-        ORDER BY tasks.date, tasks.startTime;
+    SELECT tasks.*, orderRoom.roomId, orders.guests FROM tasks 
+    JOIN orderTasks ON tasks.taskId = orderTasks.taskId
+    JOIN orders ON orderTasks.orderId = orders.id
+    JOIN orderRoom ON orders.id = orderRoom.orderId
+    ORDER BY tasks.date, tasks.startTime;
     `;
     db.all(query, (error, tasks) => {
         if (error) {
@@ -58,7 +58,7 @@ router.get('/order-tasks', (req, res) => {
 });
 
 // Endpoint til at toggle opgavens fuldførelsesstatus
-router.post('/tasks/:taskId/toggle', (req, res) => {
+router.post('/:taskId/toggle', (req, res) => {
     const taskId = req.params.taskId;
     const sql = `UPDATE tasks SET completed = NOT completed WHERE taskId = ?`;
   
@@ -69,7 +69,7 @@ router.post('/tasks/:taskId/toggle', (req, res) => {
             res.json({ message: 'Task completion toggled', taskId: taskId, completed: this.changes });
         }
     });
-  });
+});
 
 
 module.exports = router;

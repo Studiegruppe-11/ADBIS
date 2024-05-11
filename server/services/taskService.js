@@ -14,8 +14,8 @@ async function createTasksForOrder(orderId, roomId, date, startTime, endTime, se
      const cleaningTimeUTC = new Date(`${date}T${endTime}:00Z`); // Sluttid i UTC
  
      const tasks = [
-         { description: "Klargøring af lokale inkl. bordopdækning", time: setupTimeUTC.toISOString() },
-         { description: "Vand klar på bordene", time: waterTimeUTC.toISOString() },
+         { description: "Klargøring af lokale", time: setupTimeUTC.toISOString() },
+         { description: "Vand på bordene", time: waterTimeUTC.toISOString() },
          { description: "Servere frokost", time: servingTimeUTC.toISOString() },
          { description: "Rengøring af lokale", time: cleaningTimeUTC.toISOString() }
      ];
