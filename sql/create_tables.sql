@@ -52,18 +52,20 @@ CREATE TABLE IF NOT EXISTS tasks (
     startTime TEXT NOT NULL,
     endTime TEXT NOT NULL,
     date TEXT NOT NULL,
-    completed INTEGER DEFAULT 0  -- 0 betyder ikke udført, 1 betyder udført
+    roomId INTEGER,  -- Tilføj denne linje for at inkludere roomId-kolonnen
+    completed INTEGER DEFAULT 0
 );
+
 
 -- Opretter en sammenkoblingstabel mellem opgaver og ordrer
 CREATE TABLE IF NOT EXISTS orderTasks (
     orderTaskId INTEGER PRIMARY KEY AUTOINCREMENT,
     orderId INTEGER NOT NULL,
     taskId INTEGER NOT NULL,
-    roomId INTEGER NOT NULL,  -- Tilføjelse af roomId
+    roomId INTEGER NOT NULL, 
     FOREIGN KEY (orderId) REFERENCES orders (id),
     FOREIGN KEY (taskId) REFERENCES tasks (taskId),
-    FOREIGN KEY (roomId) REFERENCES rooms (roomId)  -- Tilføjelse af fremmednøgle reference
+    FOREIGN KEY (roomId) REFERENCES rooms (roomId) 
 );
 
 -- Standardværdier til lokaler
