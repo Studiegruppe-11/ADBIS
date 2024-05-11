@@ -34,12 +34,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/orders', require('./server/routes/orderRoutes')); // Inkluderer routes for ordrer
+app.use('/api/tasks', require('./server/routes/taskRoutes')); // Inkluderer routes for opgaver
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));
 });
-
-app.use('/api/orders', require('./server/routes/orderRoute')); // Inkluderer routes for ordre
-// app.use('/api/tasks', require('./server/routes/orders')); // Inkluderer routes for opgaver
 
 app.get('/orders', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'order.html'));
