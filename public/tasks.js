@@ -13,7 +13,7 @@ function fetchTasks() {
         const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
         tasks.forEach(task => {
-            if (task.date === today) {
+            if (task.date === today && task.completed !== 1) {
                 const li = document.createElement('li');
                 li.textContent = `${task.description} i lokale ${task.roomId}`;
                 const timeAndGuests = document.createElement('span');
@@ -47,8 +47,12 @@ function toggleTaskCompletion(taskId, liElement) {
     fetch(`/api/tasks/${taskId}/toggle`, { method: 'POST' })
     .then(response => response.json())
     .then(data => {
-        liElement.classList.add('completed'); // Tilføj klassen for at animere
-        setTimeout(() => liElement.remove(), 300); // Fjern elementet efter animationen
+        if (data.completed === 1) {
+            liElement.classList.add('completed'); // Tilføj klassen for at animere
+            setTimeout(() => liElement.remove(), 300); // Fjern elementet efter animationen
+        } else {
+            liElement.classList.remove('completed'); // Fjern klassen for at stoppe animationen
+        }
     })
     .catch(error => console.error('Error:', error));
 }
