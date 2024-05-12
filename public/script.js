@@ -52,29 +52,14 @@ function updateMenuOptions(guests) {
         const menuSelect = document.getElementById('menu' + i);
         menuSelect.innerHTML = ''; // Nulstil tidligere options
 
-        // Beregn det maksimale antal valgmuligheder baseret på det resterende antal gæster
-        const maxOptionsForMenu = Math.min(remainingGuests, guests - totalSelectedGuests(i - 1));
-
-        // Opret valgmuligheder op til det maksimale antal for denne menu
-        for (let j = 0; j <= maxOptionsForMenu; j++) {
+        // Opret valgmuligheder op til det totale antal gæster
+        for (let j = 0; j <= guests; j++) {
             const option = document.createElement('option');
             option.value = j;
             option.textContent = j;
             menuSelect.appendChild(option);
         }
-
-        // Opdater det resterende antal gæster efter valg fra den aktuelle menu
-        remainingGuests -= parseInt(menuSelect.value);
     }
-}
-
-// Funktion til at beregne det samlede antal valgte gæster i de tidligere menuer
-function totalSelectedGuests(menuIndex) {
-    let total = 0;
-    for (let i = 1; i <= menuIndex; i++) {
-        total += parseInt(document.getElementById('menu' + i).value);
-    }
-    return total;
 }
 
 // Opdater initial options når siden indlæses
