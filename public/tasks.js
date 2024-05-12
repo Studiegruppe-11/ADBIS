@@ -17,33 +17,60 @@ function fetchTasks() {
         tasks.forEach(task => {
             if (task.date === today && task.completed !== 1) {
                 const li = document.createElement('li');
-                li.textContent = `${task.description} i lokale ${task.roomId}`;
-                const timeAndGuests = document.createElement('span');
-                timeAndGuests.textContent = `${new Date(task.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${task.guests} Pax`; // Tilføjelse af "guests" attributten til teksten
-                li.appendChild(timeAndGuests);
+                li.className = 'task-item';
+
+                // Beskrivelse og lokale ID
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.className = 'task-description';
+                descriptionDiv.textContent = `${task.description} i lokale ${task.roomId}`;
+
+                // Tid og antal personer
+                const timeAndGuestsDiv = document.createElement('div');
+                timeAndGuestsDiv.className = 'task-time';
+                timeAndGuestsDiv.textContent = `Kl. ${new Date(task.startTime).toLocaleTimeString('da-DK', {
+                    hour: '2-digit', minute: '2-digit', hour12: false
+                })} - ${task.guests} Pax`;
+
+                // Checkbox til markering af opgave som fuldført
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = task.completed;
                 checkbox.dataset.taskId = task.taskId;
-                checkbox.onchange = () => toggleTaskCompletion(task.taskId, li);
-                const checkboxContainer = document.createElement('label'); // Wrap checkbox in a label
-                checkboxContainer.appendChild(checkbox);
-                checkboxContainer.appendChild(document.createTextNode('\u00A0')); // Add some spacing
-                li.prepend(checkboxContainer); // Prepend the checkbox to the li
-                taskList.appendChild(li);
 
-                // Tilføj eventlistener til at åbne modalboksen når der klikkes på <li> elementet
-                li.addEventListener('click', () => openModal(task));
-                
-                // Tilføj eventlisteners til træk-og-slip-funktionaliteten
+                // Tilføjelse af checkbox til starten af li-elementet
+                const checkboxContainer = document.createElement('div');
+                checkboxContainer.className = 'checkbox-container';
+                checkboxContainer.appendChild(checkbox);
+                checkboxContainer.appendChild(document.createTextNode('\u00A0'));
+
+                // Håndtering af checkbox ændringer
+                checkbox.onchange = () => toggleTaskCompletion(task.taskId, li);
+
+                // Samling af alle dele
+                li.appendChild(checkboxContainer);
+                li.appendChild(descriptionDiv);
+                li.appendChild(timeAndGuestsDiv);
+
+                // Tilføjelse af drag-and-drop funktionalitet
                 li.setAttribute('draggable', true);
                 li.addEventListener('dragstart', dragStart);
-                li.addEventListener('dragend', dragEnd);
+                li.addEventListener('dragend', event => dragEnd(event, task.taskId, li));
+
+                // Åbne modal ved klik uden på checkbox
+                li.addEventListener('click', event => {
+                    if (event.target !== checkbox) {
+                        openModal(task);
+                    }
+                });
+
+                // Tilføjer det færdige listeelement til DOM'en
+                taskList.appendChild(li);
             }
         });
     })
     .catch(error => console.error('Error loading tasks:', error));
 }
+
 
 function toggleTaskCompletion(taskId, liElement, direction) {
     fetch(`/api/tasks/${taskId}/toggle`, { method: 'POST' })
@@ -78,11 +105,6 @@ function toggleTaskCompletion(taskId, liElement, direction) {
     .catch(error => console.error('Error:', error));
 }
 
-
-
-
-
-
 // Popup til visning af information om opgaver
 function openModal(task) {
     if (event.target.type !== 'checkbox') {
@@ -101,7 +123,7 @@ function openModal(task) {
         modalContent.style.background = 'white';
         modalContent.style.padding = '20px';
         modalContent.style.borderRadius = '10px';
-        modalContent.textContent = `Opgave: ${task.description} \nLokale: ${task.roomId} \nTid: ${new Date(task.startTime).toLocaleTimeString()} - ${new Date(task.endTime).toLocaleTimeString()} \nAntal gæster: ${task.guests}`;
+        modalContent.textContent = `Opgave: ${task.description} \nLokale: ${task.roomId} \nTid: ${new Date(task.startTime).toLocaleTimeString('da-DK', {hour: '2-digit', minute: '2-digit', hour12: false})} - ${new Date(task.endTime).toLocaleTimeString('da-DK', {hour: '2-digit', minute: '2-digit', hour12: false})} \nAntal gæster: ${task.guests}`;
         
         modal.appendChild(modalContent);
         modal.onclick = () => modal.remove(); // Fjern modal ved klik uden for indholdet

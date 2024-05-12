@@ -1,5 +1,3 @@
-// /public/script.js
-
 document.getElementById('orderForm').addEventListener('submit', function(event) {
     event.preventDefault();  // Forhindrer standard formularindsendelse
 
@@ -10,7 +8,7 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
         startTime: document.getElementById('startTime').value,
         endTime: document.getElementById('endTime').value,
         servingTime: document.getElementById('servingTime').value,
-        guests: document.getElementById('guests').value,
+        guests: parseInt(document.getElementById('guests').value, 10),
         menu1: document.getElementById('menu1').value,
         menu2: document.getElementById('menu2').value,
         menu3: document.getElementById('menu3').value
@@ -25,31 +23,27 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
         body: JSON.stringify(formData)
     })
     .then(response => {
-        if (!response.ok) {  // Håndterer ikke-okay respons fra serveren
+        if (!response.ok) {
             throw new Error('Network response was not ok: ' + response.statusText);
         }
         return response.json();
     })
     .then(data => {
-        console.log('Success:', data);
-        document.getElementById('responseMessage').textContent = data.message; // Viser succesmeddelelse
-        document.getElementById('responseMessage').style.color = 'green'; // Skifter tekstfarve til grøn ved succes
+        document.getElementById('responseMessage').textContent = data.message;
+        document.getElementById('responseMessage').style.color = 'green';
     })
     .catch((error) => {
         console.error('Error:', error);
-        document.getElementById('responseMessage').textContent = 'Fejl ved oprettelse af ordre: ' + error.message; // Viser fejlmeddelelse
+        document.getElementById('responseMessage').textContent = 'Fejl ved oprettelse af ordre: ' + error.message;
     });
 });
 
 document.getElementById('guests').addEventListener('change', function() {
-    const guests = parseInt(this.value);
-    updateMenuOptions(guests);
+    updateMenuOptions(parseInt(this.value, 10));
 });
 
 function updateMenuOptions(guests) {
     const maxOptions = 3; // Max antal menuer
-    let remainingGuests = guests;
-
     for (let i = 1; i <= maxOptions; i++) {
         const menuSelect = document.getElementById('menu' + i);
         menuSelect.innerHTML = ''; // Nulstil tidligere options
@@ -64,5 +58,10 @@ function updateMenuOptions(guests) {
     }
 }
 
-// Opdater initial options når siden indlæses
-updateMenuOptions(parseInt(document.getElementById('guests').value));
+// Kald updateMenuOptions når siden indlæses, hvis der er værdi sat
+window.addEventListener('DOMContentLoaded', (event) => {
+    const initialGuests = parseInt(document.getElementById('guests').value, 10);
+    if (!isNaN(initialGuests)) {
+        updateMenuOptions(initialGuests);
+    }
+});

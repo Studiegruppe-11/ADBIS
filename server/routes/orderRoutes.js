@@ -10,14 +10,21 @@ router.post('/', async (req, res) => {
     const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3 } = req.body;
     
     try {
-        const room = await db.query(`
+        // Dette SQL-spørgsmål tjekker for ledige lokaler, som ikke har nogen overlappende arrangementer
+        const query = `
             SELECT roomId FROM rooms 
             WHERE capacity >= ? AND roomId NOT IN (
                 SELECT roomId FROM orderRoom 
-                WHERE date = ? AND NOT (endTime <= ? OR startTime >= ?)
-            ) 
+                WHERE date = ? AND (
+                    (startTime < ? AND endTime > ?) OR 
+                    (startTime < ? AND endTime > ?) OR 
+                    (startTime >= ? AND endTime <= ?)
+                )
+            )
             LIMIT 1;
-        `, [guests, date, endTime, startTime]);
+        `;
+
+        const room = await db.query(query, [guests, date, endTime, startTime, endTime, endTime, startTime, startTime]);
         
         if (!room.length) {
             return res.status(409).json({ error: 'No available rooms for the given number of guests and time slot' });
@@ -40,6 +47,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Database error while processing order' });
     }
 });
+
 
 router.get('/', async (req, res) => {
     try {

@@ -28,20 +28,14 @@ li {
     padding: 10px 20px;
     border-radius: 10px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s ease-in-out;
+    align-items: center; /* Sikrer at indholdet er centralt justeret vertikalt */
     cursor: pointer;
+    position: relative; /* Forbedret håndtering af børneelementer positionering */
 
-
-      /* Din eksisterende stil */
-      cursor: pointer; /* Tilføj denne linje for at ændre cursoren */
-      user-select: none; /* For at undgå tekstmarkering når man trækker */
-      touch-action: manipulation; /* For at forhindre scrollning på touch-enheder */
-
-
-      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      transition-delay: 0s, 0s;
+    user-select: none; /* For at undgå tekstmarkering når man trækker */
+    touch-action: manipulation; /* For at forhindre scrollning på touch-enheder */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition-delay: 0s, 0s;
 }
 
 .completed {
@@ -51,11 +45,42 @@ li {
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;  /* Øget padding for bedre plads omkring indhold */
+    margin: 10px 0 10px 0; /* Jævn fordeling af margin for at adskille boksene */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Blød skygge for et løftet udseende */
+    cursor: pointer;
+}
+
+.task-item:hover {
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15); /* Fremhævet skygge ved hover */
+}
+
+.task-description {
+    flex-grow: 1;
+    font-size: 1em; /* Standard skriftstørrelse */
+    color: #333; /* Mørkere tekstfarve for bedre læsbarhed */
+}
+
+.task-time {
+    margin-left: 20px; /* Sørger for afstand til beskrivelsen */
+    font-size: 0.9em; /* En smule mindre tekststørrelse for at skelne mellem beskrivelse og tid */
+    color: #555; /* Blødere tekstfarve */
+}
+
+.checkbox-container {
+    padding-right: 15px; /* Tilføj plads omkring checkbox for nemmere interaktion */
+}
+
+
 .collapse {
     transition: height 0.2s ease-out, margin 0.2s ease-out, padding 0.2s ease-out;
     transition-delay: 0.3s; 
 }
-
 
 
 input[type="checkbox"] {
