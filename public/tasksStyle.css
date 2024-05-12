@@ -1,4 +1,4 @@
-/* /public/styles.css */
+/* /public/tasksStyle.css */
 
 body, html {
     height: 100%;
@@ -38,11 +38,25 @@ li {
       cursor: pointer; /* Tilføj denne linje for at ændre cursoren */
       user-select: none; /* For at undgå tekstmarkering når man trækker */
       touch-action: manipulation; /* For at forhindre scrollning på touch-enheder */
+
+
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      transition-delay: 0s, 0s;
 }
 
 .completed {
-    pointer-events: none; /* Deaktivér klik på fuldførte opgaver */
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
+
+.collapse {
+    transition: height 0.2s ease-out, margin 0.2s ease-out, padding 0.2s ease-out;
+    transition-delay: 0.3s; 
+}
+
+
 
 input[type="checkbox"] {
     appearance: none;

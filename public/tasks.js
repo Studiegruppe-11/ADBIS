@@ -1,3 +1,5 @@
+// /public/tasks.js
+
 document.addEventListener('DOMContentLoaded', function() {
     fetchTasks(); // Initial fetch of tasks when the page loads
 });
@@ -43,20 +45,45 @@ function fetchTasks() {
     .catch(error => console.error('Error loading tasks:', error));
 }
 
-function toggleTaskCompletion(taskId, liElement) {
+function toggleTaskCompletion(taskId, liElement, direction) {
     fetch(`/api/tasks/${taskId}/toggle`, { method: 'POST' })
     .then(response => response.json())
     .then(data => {
         if (data.completed === 1) {
-            liElement.classList.add('completed'); // Tilføj klassen for at animere
-            setTimeout(() => liElement.remove(), 300); // Fjern elementet efter animationen
+            // Start "flyve ud" animation
+            liElement.style.transform = `translateX(${direction === 'left' ? '-' : ''}100%)`;
+            liElement.style.opacity = '0';
+            liElement.addEventListener('transitionend', (event) => {
+                if (event.propertyName === 'opacity') {
+                    // Start collapse af element efter "flyve ud"
+                    liElement.style.height = '0';
+                    liElement.style.margin = '0';
+                    liElement.style.padding = '0';
+                    liElement.addEventListener('transitionend', (event) => {
+                        if (event.propertyName === 'height') {
+                            liElement.remove(); // Fjern element når højde-transition er fuldført
+                        }
+                    });
+                }
+            });
         } else {
-            liElement.classList.remove('completed'); // Fjern klassen for at stoppe animationen
+            // Håndter genaktivering af en opgave
+            liElement.style.opacity = '1';
+            liElement.style.transform = 'translateX(0)';
+            liElement.style.height = ''; // Genopretter fuld højde
+            liElement.style.margin = ''; // Genopretter margin
+            liElement.style.padding = ''; // Genopretter padding
         }
     })
     .catch(error => console.error('Error:', error));
 }
 
+
+
+
+
+
+// Popup til visning af information om opgaver
 function openModal(task) {
     if (event.target.type !== 'checkbox') {
         const modal = document.createElement('div');
@@ -83,19 +110,20 @@ function openModal(task) {
     }
 }
 
+
+// Logik til at kunne dragge en opgave og markere som færdig
 function dragStart(event) {
     draggedItem = this;
     initialX = event.clientX;
 }
 
 function dragEnd(event) {
-    if (draggedItem) {
-        const deltaX = event.clientX - initialX;
-        if (deltaX < -(window.innerWidth * 0.2)) {
-            const taskId = draggedItem.querySelector('input[type="checkbox"]').dataset.taskId;
-            toggleTaskCompletion(taskId, draggedItem);
-        }
-        draggedItem = null;
-        initialX = null;
+    const deltaX = event.clientX - initialX;
+    if (Math.abs(deltaX) > window.innerWidth * 0.2) { // Kræver et træk på mindst 20% af skærmens bredde
+        const direction = deltaX > 0 ? 'right' : 'left'; 
+        toggleTaskCompletion(draggedItem.querySelector('input[type="checkbox"]').dataset.taskId, draggedItem, direction);
     }
+    draggedItem = null;
+    initialX = null;
 }
+
