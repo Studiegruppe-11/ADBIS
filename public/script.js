@@ -65,4 +65,3 @@ window.addEventListener('DOMContentLoaded', (event) => {
         updateMenuOptions(initialGuests);
     }
 });
-
