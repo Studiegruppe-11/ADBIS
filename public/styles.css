@@ -9,9 +9,16 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #333;
+    background: #afafaf;
     color: #fff;
     padding: 10px 20px;
+}
+
+.siteLogo {
+    display: flex;
+    align-items: center;
+    width: 200px;
+
 }
 
 
@@ -82,7 +89,7 @@ select {
 button {
     grid-column: 1 / -1; /* Knappen strækker sig over alle tre kolonner nederst */
     padding: 10px;
-    background-color: #5c67f2;
+    background-color: #38025C;
     color: white;
     border: none;
     border-radius: 4px;
@@ -92,7 +99,7 @@ button {
 }
 
 button:hover {
-    background-color: #4a54e1;
+    background-color: #a067c7;
 }
 
 .menu-container {
