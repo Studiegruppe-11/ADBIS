@@ -22,8 +22,8 @@ Følgende dependencies er nødvændige på lokal pc for at kunne køre applikati
 - SQLite3
 - Express
 
-
-1. Efter dependencies er installeret, startes applikation fra root-folderen via Node i terminalen med "node server.js"
-2. Den lokalt hostede servere kan tilgås på localhost:3000, hvor du finder bestillingssiden. 
-3
-
+1.     Klon repository'et eller download kildekoden.
+2.     Åbn en terminal eller kommandoprompt, og naviger til projektmappen.
+3.     Kør kommandoen "npm install" for at installere de nødvendige afhængigheder.
+4.     Kør kommandoen "node server.js" for at starte serveren.
+5.     Åbn en webbrowser, og gå til "http://localhost:3000" eller tryk åp linket i terminalen for at få adgang til applikationen.
