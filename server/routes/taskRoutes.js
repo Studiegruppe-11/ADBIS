@@ -10,7 +10,7 @@ const db = new Database('./mydatabase.db');
 const taskModel = new Task(db);
 
 
-// Retrieve all tasks with their order and room details
+// Henter alle opgaver
 router.get('/tasks', async (req, res) => {
     try {
         const tasks = await taskModel.fetchAllTasksWithDetails();
@@ -21,7 +21,7 @@ router.get('/tasks', async (req, res) => {
     }
 });
 
-// Complete a specific task
+// 
 router.post('/tasks/:taskId/complete', async (req, res) => {
     const { taskId } = req.params;
     try {
@@ -33,7 +33,7 @@ router.post('/tasks/:taskId/complete', async (req, res) => {
     }
 });
 
-// Retrieve all tasks related to orders
+// Henter alle opgaver med tilhørende ordre
 router.get('/order-tasks', async (req, res) => {
     try {
         const results = await taskModel.fetchOrderTasks();
@@ -44,7 +44,7 @@ router.get('/order-tasks', async (req, res) => {
     }
 });
 
-// Toggle the completion status of a task
+// Gør en opgave færdig
 router.post('/:taskId/toggle', async (req, res) => {
     const { taskId } = req.params;
     try {

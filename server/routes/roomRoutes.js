@@ -8,7 +8,7 @@ const db = new Database('./mydatabase.db');
 
 const roomModel = new Room(db);
 
-// Fetch all rooms
+// Henter alle lokaler
 router.get('/', async (req, res) => {
     try {
         const rooms = await roomModel.getAllRooms();
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Fetch specific room details
+// Henter detaljer om et enkelt lokale
 router.get('/:roomId', async (req, res) => {
     const { roomId } = req.params;
     try {
@@ -35,7 +35,7 @@ router.get('/:roomId', async (req, res) => {
     }
 });
 
-// Check room availability
+// Tjek om et lokale er ledigt på en given dato og tid
 router.get('/check-availability/:roomId', async (req, res) => {
     const { roomId } = req.params;
     const { date, startTime, endTime } = req.query;
