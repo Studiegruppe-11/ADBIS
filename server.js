@@ -56,17 +56,7 @@ app.get('/tasks', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tasks.html'));
 });
 
-// Endpoint til at hente alle opgaver
-app.get('/api/tasks', (req, res) => {
-  db.all('SELECT * FROM tasks ORDER BY date, startTime', (error, tasks) => {
-      if (error) {
-          console.error('Error retrieving tasks:', error);
-          res.status(500).json({ error: 'Failed to retrieve tasks' });
-      } else {
-          res.json(tasks);
-      }
-  });
-});
+
 
 
 const port = 3000;
