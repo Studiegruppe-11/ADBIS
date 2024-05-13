@@ -1,0 +1,10 @@
+der er installeret jest som dev dependency med "npm install --save-dev jest"
+der er lavet et script i package.json, så man kan skrive npm run test
+
+"scripts": {
+  "test": "jest"
+}
+
+Kommandoen kan man kører i tests mappen.
+
+Der skal laves test med mocking database calls, test database interaction + interaction med routes.
