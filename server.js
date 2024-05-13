@@ -56,9 +56,6 @@ app.get('/tasks', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tasks.html'));
 });
 
-
-
-
 const port = 3000;
 app.listen(port, () => {
     console.log(`Serveren kører på http://localhost:${port}`);

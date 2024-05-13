@@ -7,9 +7,30 @@
     <link rel="stylesheet" href="tasksStyle.css">
 </head>
 <body>
+    <header>
+        <img src="\img\DI logo 2400x1330_u_txt.png" alt="DI Logo" class="siteLogo">
+        <div class="right-header">
+            <div class="user-info">
+                <span>John</span>
+                <button id="adminButton">Admin Links</button>
+                <button>Log ud</button>
+            </div>
+        </div>
+    </header>
+    <div id="adminLinks" class="admin-links" style="display: none;">
+        <a href="/api/orders">Se Ordrer</a>
+        <a href="/api/rooms">Se Lokaler</a>
+        <a href="/tasks">Se Opgaver</a>
+        <a href="/orderRoom">Se Ordre-Lokale</a>
+        <a href="/api/tasks/order-tasks">Se Ordre-Opgave</a>
+        <a href="/api/tasks/tasks">Se Opgave API</a>
+    </div>
     <div class="container">
-        <h1>Opgaveliste</h1>
-        <ul id="taskList"></ul>
+        <div class="box">
+            <h1 id="opgaveliste">Opgaveliste</h1>
+            <ul id="taskList"></ul>
+    
+        </div>    
     </div>
     <script src="tasks.js"></script>
 </body>

@@ -149,3 +149,12 @@ function dragEnd(event) {
     initialX = null;
 }
 
+document.getElementById('adminButton').addEventListener('click', function() {
+    var adminLinks = document.getElementById('adminLinks');
+    if (adminLinks.style.display === 'none' || adminLinks.style.display === '') {
+        adminLinks.style.display = 'block'; // Shows the admin links
+    } else {
+        adminLinks.style.display = 'none'; // Hides the admin links
+    }
+});
+

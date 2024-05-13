@@ -1,17 +1,21 @@
 body, html {
     height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+    background: #ffffff; 
+    color: #333; /* Darker text for better readability */
+    overflow: hidden;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #afafaf;
     color: #fff;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
+    background: linear-gradient(to right, #a067c7, #38025C);
+    height: 80px;
+
 }
 
 .footer {
@@ -21,29 +25,33 @@ header {
     background-color: #afafaf;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
 }
 
-.siteLogo {
-    display: flex;
-    align-items: center;
-    width: 200px;
 
+.siteLogo {
+    height: 50px; /* Adjusted for visual balance */
 }
 
 
 .right-header {
     display: flex;
     align-items: center;
-    vertical-align: middle;
+    justify-content: flex-end; /* Ensures alignment to the right */
+    padding-right: 20px; /* Ensures padding on the right side if needed */
 }
 
 
 .container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+    flex-direction: column;  /* Align children (form and links) in a column */
+    align-items: center;     /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    background-image: url(/img/diBaggrund.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: calc(100vh - 60px);
 }
 
 form {
@@ -61,8 +69,15 @@ form {
     margin: auto; /* Centrerer formularen */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background: white;
+    color: #ffffff;
+
+    /*GlassMorphism effekt fra: https://css.glass/*/
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Grid area tilpasninger */
@@ -99,17 +114,24 @@ select {
 button {
     grid-column: 1 / -1; /* Knappen strækker sig over alle tre kolonner nederst */
     padding: 10px;
-    background-color: #38025C;
+    background-color: #a067c7;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+    transition-property: all;
+    transition-duration: 0.3s;
 
 }
 
 button:hover {
-    background-color: #a067c7;
+    transform: scale(0.90)
 }
 
 .menu-container {
@@ -134,8 +156,7 @@ button:hover {
 
 .user-info {
     display: flex;
-    align-items: center;
-    margin-left: 20px;
+    align-items: center; /* Ensures vertical alignment */
 }
 
 .user-info span {
@@ -146,3 +167,76 @@ button:hover {
     margin-left: 10px;
 }
 
+.admin-links {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%; /* Match the width of the form for consistency */
+    margin-top: 20px; /* Space above the admin links */
+}
+
+.links-row {
+    display: flex;
+    justify-content: center; /* Centers the links horizontally */
+    width: 100%; /* Ensures each row spans the full width of the admin links container */
+    margin-bottom: 10px; /* Provides spacing between the rows */
+}
+
+.links-row a {
+    margin-right: 10px; /* Space between links in the same row */
+}
+
+.links-row h3 {
+    margin-right: 10px; /* Space between the heading and the first link */
+}
+
+/* Adjust the button style if needed */
+#adminButton {
+    align-self: center; /* Center button in the grid */
+}
+
+.admin-links {
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    right: 10px;
+    top: 60px; /* Adjust based on your header's height */
+}
+
+.admin-links a {
+    display: block;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.admin-links a:hover {
+    background-color: #ddd;
+}
+
+.admin-links {
+    display: none; /* Hidden by default */
+    position: absolute;
+    right: 10px;
+    top: 70px; /* Adjust this based on actual height of the header */
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    width: 200px; /* Slimmer dropdown */
+    overflow: hidden;
+    z-index: 1000; /* Ensures it's above other content */
+}
+
+.admin-links a {
+    display: block;
+    color: #333;
+    padding: 8px 16px; /* Adjust padding to control link height */
+    text-decoration: none;
+}
+
+.admin-links a:hover {
+    background-color: #f4f4f4;
+}

@@ -9,28 +9,40 @@
 <body>
     <header>
         <img src="\img\DI logo 2400x1330_u_txt.png" alt="" class="siteLogo">
-        <h1>DI - Bestilling</h1>
         <div class="right-header">
             <div class="user-info">
                 <span>John</span>
+                <button id="adminButton">Admin Links</button>
                 <button>Log ud</button>
             </div>
         </div>
     </header>
+    <div id="adminLinks" class="admin-links" style="display: none;">
+        <a href="/api/orders">Se Ordrer</a>
+        <a href="/api/rooms">Se Lokaler</a>
+        <a href="/tasks">Se Opgaver</a>
+        <a href="/orderRoom">Se Ordre-Lokale</a>
+        <a href="/api/tasks/order-tasks">Se Ordre-Opgave</a>
+        <a href="/api/tasks/tasks">Se Opgave API</a>
+    </div>
     <div class="container">
         <form id="orderForm">
+            <!-- Event Info -->
             <div class="event-info">
                 <label for="eventName">Navn på arrangement</label>
                 <input type="text" id="eventName" name="eventName" required>
             </div>
+            <!-- Date Info -->
             <div class="date-info">
                 <label for="date">Dato</label>
                 <input type="date" id="date" name="date" required>
             </div>
+            <!-- Guests Info -->
             <div class="guests-info">
                 <label for="guests">Antal personer</label>
                 <input type="number" id="guests" name="guests" min="1" required>
             </div>
+            <!-- Time Info -->
             <div class="start-info">
                 <label for="startTime">Starttidspunkt</label>
                 <input type="time" id="startTime" name="startTime" required>
@@ -39,41 +51,28 @@
                 <label for="endTime">Sluttidspunkt</label>
                 <input type="time" id="endTime" name="endTime" required>
             </div>
+            <!-- Serving Time Info -->
             <div class="serving-info">
                 <label for="servingTime">Serveringstidspunkt</label>
                 <input type="time" id="servingTime" name="servingTime" required>
             </div>
+            <!-- Menu Selection -->
             <div class="menu menu1">
                 <label for="menu1">Menu 1</label>
-                <select id="menu1" name="menu1">
-                    <!-- Options vil blive tilføjet dynamisk baseret på antallet af gæster -->
-                </select>
+                <select id="menu1" name="menu1"></select>
             </div>
             <div class="menu menu2">
                 <label for="menu2">Menu 2</label>
-                <select id="menu2" name="menu2">
-                    <!-- Options vil blive tilføjet dynamisk baseret på antallet af gæster -->
-                </select>
+                <select id="menu2" name="menu2"></select>
             </div>
             <div class="menu menu3">
                 <label for="menu3">Menu 3</label>
-                <select id="menu3" name="menu3">
-                    <!-- Options vil blive tilføjet dynamisk baseret på antallet af gæster -->
-                </select>
+                <select id="menu3" name="menu3"></select>
             </div>
-            
             <button type="submit">Opret ordre</button>
+            <div id="responseMessage" style="color:#a067c7; margin-top: 20px;"></div>
         </form>
-        <div id="responseMessage" style="color: rgb(43, 255, 0); margin-top: 20px;"></div>
-    </div>
-    <div class="footer"> 
-        <h2>Admin Links:</h2>
-        <h3>Hovedlinks: </h3>
-        <a href="/api/orders">Se Ordrer</a> - <a href="/api/rooms">Se Lokaler</a> - <a href="/tasks">Se Opgaver</a> <br>
-        <h3>Sekundære: </h3> 
-        <a href="/orderRoom">Se Ordre-Lokale</a> - <a href="/api/tasks/order-tasks">Se Ordre-Opgave</a> - <a href="/api/tasks/tasks">Se Opgave API</a>
-    </div>
+    </div>   
     <script src="script.js"></script>
 </body>
 </html>
-

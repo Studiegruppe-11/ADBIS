@@ -30,7 +30,7 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
     })
     .then(data => {
         document.getElementById('responseMessage').textContent = data.message;
-        document.getElementById('responseMessage').style.color = 'green';
+        document.getElementById('responseMessage').style.color = '#a067c7';
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -63,5 +63,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const initialGuests = parseInt(document.getElementById('guests').value, 10);
     if (!isNaN(initialGuests)) {
         updateMenuOptions(initialGuests);
+    }
+});
+
+document.getElementById('adminButton').addEventListener('click', function() {
+    var adminLinks = document.getElementById('adminLinks');
+    if (adminLinks.style.display === 'block') {
+        adminLinks.style.display = 'none';
+    } else {
+        adminLinks.style.display = 'block';
     }
 });
