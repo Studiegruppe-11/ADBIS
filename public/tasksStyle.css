@@ -1,4 +1,4 @@
-/* /public/tasksStyle.css */
+
 
 body, html {
     height: 100%;
@@ -14,7 +14,7 @@ header {
     justify-content: space-between;
     align-items: center;
     color: #fff;
-    /* padding: 10px 20px; */
+    
     background: linear-gradient(to right, #a067c7, #38025C);
     height: 80px;
 
@@ -24,26 +24,24 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Start items at the top */
-    overflow: auto; /* Allows scrolling when content overflows */
+    justify-content: flex-start; 
+    overflow: auto; 
     background-image: url(/img/diBaggrund.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     height: calc(100vh - 60px);
-    padding-top: 80px;
-    padding-bottom: 80px;
+        
 
 }
 
 .box {
     width: 40%;
-    margin: auto; /* Centrerer formularen */
+    margin: auto; 
     padding: 20px;
     border-radius: 8px;
     color: #ffffff;
-
-    /*GlassMorphism effekt fra: https://css.glass/*/
+        /*GlassMorphism effekt fra: https://css.glass/*/
     background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -69,12 +67,12 @@ li {
     padding: 10px 20px;
     border-radius: 10px;
     display: flex;
-    align-items: center; /* Sikrer at indholdet er centralt justeret vertikalt */
+    align-items: center; 
     cursor: pointer;
-    position: relative; /* Forbedret håndtering af børneelementer positionering */
+    position: relative; 
 
-    user-select: none; /* For at undgå tekstmarkering når man trækker */
-    touch-action: manipulation; /* For at forhindre scrollning på touch-enheder */
+    user-select: none; 
+    touch-action: manipulation; 
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     transition-delay: 0s, 0s;
 }
@@ -92,34 +90,34 @@ li {
 .task-item {
     display: flex;
     align-items: center;
-    padding: 15px 20px;  /* Øget padding for bedre plads omkring indhold */
-    margin: 10px 0 10px 0; /* Jævn fordeling af margin for at adskille boksene */
+    padding: 15px 20px;  
+    margin: 10px 0 10px 0; 
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Blød skygge for et løftet udseende */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
     cursor: pointer;
     transition: all 0.3s ease-out;
 
 }
 
 .task-item:hover {
-    box-shadow: 0 6px 10px rgba(0,0,0,0.15); /* Fremhævet skygge ved hover */
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15); 
 }
 
 .task-description {
     flex-grow: 1;
-    font-size: 1em; /* Standard skriftstørrelse */
-    color: #333; /* Mørkere tekstfarve for bedre læsbarhed */
+    font-size: 1em; 
+    color: #333; 
 }
 
 .task-time {
-    margin-left: 20px; /* Sørger for afstand til beskrivelsen */
-    font-size: 0.9em; /* En smule mindre tekststørrelse for at skelne mellem beskrivelse og tid */
-    color: #555; /* Blødere tekstfarve */
+    margin-left: 20px; 
+    font-size: 0.9em; 
+    color: #555; 
 }
 
 .checkbox-container {
-    padding-right: 15px; /* Tilføj plads omkring checkbox for nemmere interaktion */
+    padding-right: 15px; 
 }
 
 
@@ -185,7 +183,7 @@ li.completed {
 
 .user-info {
     display: flex;
-    align-items: center; /* Ensures vertical alignment */
+    align-items: center; 
     padding-right: 20px;
 }
 
@@ -198,22 +196,23 @@ li.completed {
 }
 
 .admin-links {
-    display: none;
+    display: none; 
     position: absolute;
     right: 10px;
-    top: 60px;
-    background-color: #fff;
+    top: 90px; 
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    padding: 10px;
-    z-index: 1000;
+    width: 200px; 
+    overflow: hidden;
+    z-index: 1000; 
 }
 
 .admin-links a {
-    color: #333;
-    text-decoration: none;
-    padding: 8px 16px;
     display: block;
+    color: #333;
+    padding: 8px 16px; 
+    text-decoration: none;
 }
 
 .admin-links a:hover {
