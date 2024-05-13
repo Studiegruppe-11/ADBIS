@@ -36,6 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/orders', require('./server/routes/orderRoutes')); 
 app.use('/api/tasks', require('./server/routes/taskRoutes')); 
+app.use('/api/rooms', require('./server/routes/roomRoutes'));
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));

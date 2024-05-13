@@ -4,24 +4,7 @@ class Order {
         this.db = db;
     }
 
-    async findAvailableRoom(guests, date, startTime, endTime) {
-        const query = `
-            SELECT roomId FROM rooms 
-            WHERE capacity >= ? AND roomId NOT IN (
-                SELECT roomId FROM orderRoom 
-                WHERE date = ? AND (
-                    (startTime < ? AND endTime > ?) OR 
-                    (startTime < ? AND endTime > ?) OR 
-                    (startTime >= ? AND endTime <= ?)
-                )
-            )
-            LIMIT 1;
-        `;
-        const room = await this.db.query(query, [guests, date, endTime, startTime, endTime, endTime, startTime, startTime]);
-        return room;
-    }
-
-    async createOrder(data) {
+       async createOrder(data) {
         const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3, roomId } = data;
         const orderId = await this.db.run(`
             INSERT INTO orders (eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3)

@@ -2,28 +2,35 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../database/database');
+
 const Order = require('../models/order');
 const TaskService = require('../services/taskService');
+const Room = require('../models/room');
+
 const db = new Database('./mydatabase.db');
 const orderModel = new Order(db);
+const roomModel = new Room(db);
 
+// /server/routes/orderRoutes.js
 router.post('/', async (req, res) => {
     const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3 } = req.body;
     
     try {
-        const rooms = await orderModel.findAvailableRoom(guests, date, startTime, endTime);
-        if (!rooms.length) {
+        const availability = await roomModel.checkRoomAvailability(null, date, startTime, endTime);
+        if (!availability.available) {
             return res.status(409).json({ error: 'No available rooms for the given number of guests and time slot' });
         }
 
-        const orderId = await orderModel.createOrder({ ...req.body, roomId: rooms[0].roomId });
-        TaskService.createTasksForOrder(orderId, rooms[0].roomId, date, startTime, endTime, servingTime);
-        res.status(200).json({ message: 'Order created and room allocated successfully', orderId, roomId: rooms[0].roomId });
+        const orderId = await orderModel.createOrder({ ...req.body, roomId: availability.roomId });
+        TaskService.createTasksForOrder(orderId, availability.roomId, date, startTime, endTime, servingTime);
+        res.status(200).json({ message: 'Order created and room allocated successfully', orderId, roomId: availability.roomId });
     } catch (error) {
         console.error('Error processing order:', error);
         res.status(500).json({ error: 'Database error while processing order' });
     }
 });
+
+
 
 router.get('/', async (req, res) => {
     try {
