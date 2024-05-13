@@ -2,16 +2,15 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../database/database');
-
 const Order = require('../models/order');
-const TaskService = require('../services/taskService');
 const Room = require('../models/room');
+const Task = require('../models/task');
 
 const db = new Database('./mydatabase.db');
 const orderModel = new Order(db);
 const roomModel = new Room(db);
+const taskModel = new Task(db);  // Using the Task model directly
 
-// /server/routes/orderRoutes.js
 router.post('/', async (req, res) => {
     const { eventName, date, startTime, endTime, servingTime, guests, menu1, menu2, menu3 } = req.body;
     
@@ -22,15 +21,14 @@ router.post('/', async (req, res) => {
         }
 
         const orderId = await orderModel.createOrder({ ...req.body, roomId: availability.roomId });
-        TaskService.createTasksForOrder(orderId, availability.roomId, date, startTime, endTime, servingTime);
+        // Directly create tasks using the Task model now, instead of TaskService
+        await taskModel.createTasksForOrder(orderId, availability.roomId, date, startTime, endTime, servingTime);
         res.status(200).json({ message: 'Order created and room allocated successfully', orderId, roomId: availability.roomId });
     } catch (error) {
         console.error('Error processing order:', error);
         res.status(500).json({ error: 'Database error while processing order' });
     }
 });
-
-
 
 router.get('/', async (req, res) => {
     try {

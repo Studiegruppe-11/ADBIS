@@ -1,8 +1,8 @@
 // /server/routes/roomRoutes.js
 const express = require('express');
 const router = express.Router();
-const Database = require('../database/database');
 
+const Database = require('../database/database');
 const Room = require('../models/room');
 const db = new Database('./mydatabase.db');
 

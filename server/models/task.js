@@ -55,6 +55,37 @@ class Task {
             throw error;
         }
     }
+
+    async createTasksForOrder(orderId, roomId, date, startTime, endTime, servingTime) {
+        const tasks = [
+            { description: "Klargøring af lokale", time: this.convertToLocalTime(date, startTime, -15) },
+            { description: "Vand på bordene", time: this.convertToLocalTime(date, startTime, -10) },
+            { description: "Servere frokost", time: this.convertToLocalTime(date, servingTime, 0) },
+            { description: "Rengøring af lokale", time: this.convertToLocalTime(date, endTime, 0) }
+        ];
+
+        try {
+            for (const task of tasks) {
+                const taskId = await this.db.run(
+                    'INSERT INTO tasks (description, startTime, endTime, date, roomId) VALUES (?, ?, ?, ?, ?)', 
+                    [task.description, task.time.toISOString(), task.time.toISOString(), date, roomId]
+                );
+                await this.db.run(
+                    'INSERT INTO orderTasks (orderId, taskId, roomId) VALUES (?, ?, ?)', 
+                    [orderId, taskId, roomId]
+                );
+            }
+        } catch (error) {
+            console.error('Error creating tasks for order:', error);
+            throw error;
+        }
+    }
+
+    convertToLocalTime(date, time, offsetMinutes) {
+        const dateTime = new Date(date + 'T' + time);
+        dateTime.setMinutes(dateTime.getMinutes() + offsetMinutes);
+        return dateTime;
+    }
 }
 
 module.exports = Task;
