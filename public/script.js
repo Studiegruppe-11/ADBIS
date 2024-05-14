@@ -1,3 +1,4 @@
+// /public/script.js
 document.getElementById('orderForm').addEventListener('submit', function(event) {
     event.preventDefault();  // Forhindrer standard formularindsendelse
 

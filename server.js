@@ -8,6 +8,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
+const { initializeDatabase } = require('./server/database/databaseConfig');
+
 
 // Database setup
 const db = new sqlite3.Database('./mydatabase.db', (err) => {
@@ -15,27 +17,28 @@ const db = new sqlite3.Database('./mydatabase.db', (err) => {
     console.error('Error opening database', err.message);
   } else {
     console.log('Database connected.');
-    initializeDatabase(); // Sikrer, at tabellerne er oprettet
+    initializeDatabase(db); // Ensure to pass the db object
   }
 });
 
-function initializeDatabase() {
-  const sqlSchema = fs.readFileSync('./sql/create_tables.sql', 'utf8');
-  db.exec(sqlSchema, (error) => {
-      if (error) {
-          console.error('Failed to create tables', error);
-      } else {
-          console.log('Tables created successfully');
-      }
-  });
-}
+
+// function initializeDatabase() {
+//   const sqlSchema = fs.readFileSync('./sql/create_tables.sql', 'utf8');
+//   db.exec(sqlSchema, (error) => {
+//       if (error) {
+//           console.error('Failed to create tables', error);
+//       } else {
+//           console.log('Tables created successfully');
+//       }
+//   });
+// }
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/orders', require('./server/routes/orderRoutes')); 
-app.use('/api/tasks', require('./server/routes/taskRoutes')); 
+app.use('/api/tasks', require('./server/routes/taskRoutes'));
 app.use('/api/rooms', require('./server/routes/roomRoutes'));
 
 
@@ -56,7 +59,12 @@ app.get('/tasks', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tasks.html'));
 });
 
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Serveren kører på http://localhost:${port}`);
-});
+
+module.exports = {app, initializeDatabase};
+
+if (require.main === module) {
+  const port = 3000;
+  app.listen(port, () => {
+      console.log(`Server running on http://localhost:${port}`);
+  });
+}

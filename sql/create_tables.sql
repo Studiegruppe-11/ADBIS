@@ -1,12 +1,12 @@
 -- /sql/create_tables.sql
 
--- sletter tabeller når serveren starter, så de kan oprettes fresh igen. Vi kan slå dette fra når vi er færdige med at teste
+-- sletter tabeller når serveren starter, så de oprettes på nu igen. (Un)comment alt efter behov
 
-DROP TABLE IF EXISTS orders;
-DROP TABLE IF EXISTS rooms;
-DROP TABLE IF EXISTS orderRoom;
-DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS orderTasks;
+-- DROP TABLE IF EXISTS orders;
+-- DROP TABLE IF EXISTS rooms;
+-- DROP TABLE IF EXISTS orderRoom;
+-- DROP TABLE IF EXISTS tasks;
+-- DROP TABLE IF EXISTS orderTasks;
 
 
 -- Til oprettelse af ordre

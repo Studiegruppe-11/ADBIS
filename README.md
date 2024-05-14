@@ -29,3 +29,14 @@ Følgende dependencies er nødvændige på lokal pc for at kunne køre applikati
 * For at lægge en ordre, indtasten efterspurgte oplysninger.
 * Herefter kan man med "Admin Links" i bunden navigere til fx opgaver.
 * Da der ikke er inkluderet socket i denne app, skal siden genindlæses for at vise ændringer i databasen.
+
+## OBS
+* Databasen kan blive fyldt op, hvis det er tilfældet, så uncomment nedenstående linjer i "root/sql/create_tables.sql".
+
+```
+-- DROP TABLE IF EXISTS orders;
+-- DROP TABLE IF EXISTS rooms;
+-- DROP TABLE IF EXISTS orderRoom;
+-- DROP TABLE IF EXISTS tasks;
+-- DROP TABLE IF EXISTS orderTasks;
+```
