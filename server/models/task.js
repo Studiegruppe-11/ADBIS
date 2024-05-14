@@ -1,10 +1,12 @@
 // /server/models/task.js
+
+// Klasse til opgaver
 class Task {
     constructor(db) {
         this.db = db;
     }
 
-    // Fetch all tasks along with related order and room details
+    // Hent alle opgaver sammen med tilhørende ordre- og lokaleoplysninger
     async fetchAllTasksWithDetails() {
         const sql = `
             SELECT tasks.*, orderRoom.roomId, orders.guests FROM tasks 
@@ -16,13 +18,13 @@ class Task {
         return await this.db.query(sql);
     }
 
-    // Complete a task by setting its 'completed' status to 1
+    // Afslut en opgave ved at sætte dens 'completed' status til 1
     async completeTask(taskId) {
         const sql = 'UPDATE tasks SET completed = 1 WHERE taskId = ?';
         return await this.db.run(sql, [taskId]);
     }
 
-    // Toggle the completion status of a task
+    // Skift fuldførelsesstatus for en opgave
     async toggleTaskCompletion(taskId) {
         const updateSql = 'UPDATE tasks SET completed = NOT completed WHERE taskId = ?';
         const selectSql = 'SELECT completed FROM tasks WHERE taskId = ?';
@@ -30,13 +32,13 @@ class Task {
         return await this.db.query(selectSql, [taskId]);
     }
 
-    // Retrieve all task-order relations
+    // Hent alle relationer mellem opgaver og ordrer
     async fetchOrderTasks() {
         const sql = 'SELECT * FROM orderTasks';
         return await this.db.query(sql);
     }
 
-    // Optionally, add a method to create tasks if needed
+    // Opret en ny opgave
     async createTasksForOrder(tasks) {
         try {
             for (const task of tasks) {
@@ -56,6 +58,7 @@ class Task {
         }
     }
 
+    // Laver en liste af opgaver til en ordre
     async createTasksForOrder(orderId, roomId, date, startTime, endTime, servingTime) {
         const tasks = [
             { description: "Klargøring af lokale", time: this.convertToLocalTime(date, startTime, -15) },

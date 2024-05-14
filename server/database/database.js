@@ -1,6 +1,7 @@
 // /server/database/database.js
 const sqlite3 = require('sqlite3').verbose();
 
+// Database klasse
 class Database {
     constructor(dbPath) {
         this.db = new sqlite3.Database(dbPath, (err) => {

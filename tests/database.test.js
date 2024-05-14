@@ -3,10 +3,10 @@ const { initializeDatabase } = require('../server/database/databaseConfig');
 
 let db;
 
-// Initialiserer testmiljøet og databasen før alle tests køres
+// Initialiserer testmiljøet og databasen før tests køres
 beforeAll(async () => {
-    db = new sqlite3.Database(':memory:'); // Bruger en hukommelsesdatabase til test
-    await initializeDatabase(db); // Initialiserer databasen med nødvendige tabeller
+    db = new sqlite3.Database(':memory:'); 
+    await initializeDatabase(db); 
 });
 
 describe('Database Manipulation Tests', () => {
@@ -20,8 +20,8 @@ describe('Database Manipulation Tests', () => {
 
         await new Promise((resolve, reject) => {
             db.run(sql, params, function(err) {
-                if (err) reject(err); // Håndterer fejl ved databaseoperation
-                insertedOrderId = this.lastID; // Gemmer ID for den indsatte ordre
+                if (err) reject(err); 
+                insertedOrderId = this.lastID; 
                 expect(this.lastID).toBeDefined(); // Bekræfter at en ID er blevet genereret
                 resolve();
             });

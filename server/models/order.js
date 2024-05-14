@@ -1,4 +1,6 @@
 // /server/models/order.js
+
+// Klasse til ordre
 class Order {
     constructor(db) {
         this.db = db;

@@ -21,36 +21,23 @@ const db = new sqlite3.Database('./mydatabase.db', (err) => {
   }
 });
 
-
-// function initializeDatabase() {
-//   const sqlSchema = fs.readFileSync('./sql/create_tables.sql', 'utf8');
-//   db.exec(sqlSchema, (error) => {
-//       if (error) {
-//           console.error('Failed to create tables', error);
-//       } else {
-//           console.log('Tables created successfully');
-//       }
-//   });
-// }
-
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.use('/api/orders', require('./server/routes/orderRoutes')); 
 app.use('/api/tasks', require('./server/routes/taskRoutes'));
 app.use('/api/rooms', require('./server/routes/roomRoutes'));
 
 
+// Frontend filer
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'order.html'));
 });
-
 app.get('/orders', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'order.html'));
-});
-app.get('/rooms', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'rooms.html'));
 });
 app.get('/orderroom', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'orderRoom.html'));
@@ -59,9 +46,10 @@ app.get('/tasks', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tasks.html'));
 });
 
-
+// Eksport af app og db initialisering. Bliver kun brugt i tests...
 module.exports = {app, initializeDatabase};
 
+// Start server med port 3000
 if (require.main === module) {
   const port = 3000;
   app.listen(port, () => {

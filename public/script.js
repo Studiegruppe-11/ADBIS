@@ -59,7 +59,7 @@ function updateMenuOptions(guests) {
     }
 }
 
-// Kald updateMenuOptions når siden indlæses, hvis der er værdi sat
+// Kald updateMenuOptions når siden indlæses, hvis der er en værdi
 window.addEventListener('DOMContentLoaded', (event) => {
     const initialGuests = parseInt(document.getElementById('guests').value, 10);
     if (!isNaN(initialGuests)) {

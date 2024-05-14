@@ -1,4 +1,6 @@
 // /server/models/room.js
+
+// Klasse til lokaler
 class Room {
     constructor(db) {
         this.db = db;
@@ -14,7 +16,6 @@ class Room {
         return await this.db.query(query, [roomId]);
     }
 
-    // /server/models/room.js
     async checkRoomAvailability(roomId, date, startTime, endTime) {
         let query;
         let params;

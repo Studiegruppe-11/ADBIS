@@ -1,7 +1,7 @@
 // /public/tasks.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetchTasks(); // Initial fetch of tasks when the page loads
+    fetchTasks(); // Fetcher ved page load
 });
 
 let draggedItem = null;
@@ -31,7 +31,7 @@ function fetchTasks() {
                     hour: '2-digit', minute: '2-digit', hour12: false
                 })} - ${task.guests} Pax`;
 
-                // Checkbox til markering af opgave som fuldført
+                // "Checkbox" til markering af opgave som fuldført
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = task.completed;
@@ -88,7 +88,7 @@ function toggleTaskCompletion(taskId, liElement, direction) {
                     liElement.style.padding = '0';
                     liElement.addEventListener('transitionend', (event) => {
                         if (event.propertyName === 'height') {
-                            liElement.remove(); // Fjern element når højde-transition er fuldført
+                            liElement.remove();
                         }
                     });
                 }
@@ -141,7 +141,7 @@ function dragStart(event) {
 
 function dragEnd(event) {
     const deltaX = event.clientX - initialX;
-    if (Math.abs(deltaX) > window.innerWidth * 0.2) { // Kræver et træk på mindst 20% af skærmens bredde
+    if (Math.abs(deltaX) > window.innerWidth * 0.2) { // Træk mindst 20% af skærmens bredde
         const direction = deltaX > 0 ? 'right' : 'left'; 
         toggleTaskCompletion(draggedItem.querySelector('input[type="checkbox"]').dataset.taskId, draggedItem, direction);
     }
@@ -152,9 +152,9 @@ function dragEnd(event) {
 document.getElementById('adminButton').addEventListener('click', function() {
     var adminLinks = document.getElementById('adminLinks');
     if (adminLinks.style.display === 'none' || adminLinks.style.display === '') {
-        adminLinks.style.display = 'block'; // Shows the admin links
+        adminLinks.style.display = 'block'; 
     } else {
-        adminLinks.style.display = 'none'; // Hides the admin links
+        adminLinks.style.display = 'none'; 
     }
 });
 
