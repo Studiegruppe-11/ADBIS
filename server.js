@@ -17,7 +17,7 @@ const db = new sqlite3.Database('./mydatabase.db', (err) => {
     console.error('Error opening database', err.message);
   } else {
     console.log('Database connected.');
-    initializeDatabase(db); // Ensure to pass the db object
+    initializeDatabase(db); 
   }
 });
 
