@@ -1,5 +1,5 @@
 //root/server.js
-// OBS: HAR SAT DEN TIL AT DROPPE TABLES VED HVER RESTART AF SERVEREN (hvis vi skal ændre i kolonner)
+
 // Special requests er ikke i frontend, men hvis den skal bruges er der plads i DB.
 
 const express = require('express');
