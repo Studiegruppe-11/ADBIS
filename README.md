@@ -1,5 +1,5 @@
 # ADBIS
-Programmering af enkelt funktion til vores eksamensprojekt i ADBIS
+Programmering af enkelt funktionalitet til vores eksamensprojekt i Analyse og Design af Brugervenlinge Informationssystemer. Læs nedenstående for opsætning og brugsguide.
 
 ![image](https://github.com/Studiegruppe-11/ADBIS/assets/79728659/af327741-30b6-487d-a1de-4b71bab212b8)
 
