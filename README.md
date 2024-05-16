@@ -20,7 +20,7 @@ Følgende dependencies er nødvændige for at kunne køre applikationen. Alle ka
 - SQLite3
 - Express
 
-1.     Klon repository'et eller download kildekoden.
+1.     Klon repository'et eller download kildekoden (vælg "masterWorking" branchen).
 2.     Åbn en terminal eller kommandoprompt, og naviger til projektmappen.
 3.     Kør kommandoen "npm install" for at installere de nødvendige afhængigheder.
 4.     Kør kommandoen "node server.js" for at starte serveren.
