@@ -1,10 +1,8 @@
-der er installeret jest som dev dependency med "npm install --save-dev jest"
-der er lavet et script i package.json, så man kan skrive npm run test
+Der er installeret "jest" og "supertest" som dev dependency med "npm install --save-dev jest" og "npm install --save-dev supertest"
+Der er lavet et script i package.json, så man kan skrive "npm run test" inde i "/tests" mappen, for at køre begge testfiler. 
 
 "scripts": {
   "test": "jest"
 }
 
-Kommandoen kan man kører i tests mappen.
-
-Der skal laves test med mocking database calls, test database interaction + interaction med routes.
+Hvis databasen er fyldt op, vil testen der bruger sql "INSERT" fejle. Her skal man uncommente starten af SQL-koden i "/sql/create_tables.sql", for at ryde alle tables ved serveropstart (som beskrevet i README.md).
