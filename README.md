@@ -1,6 +1,10 @@
 # ADBIS
 Programmering af enkelt funktion til vores eksamensprojekt i ADBIS
 
+![image](https://github.com/Studiegruppe-11/ADBIS/assets/79728659/af327741-30b6-487d-a1de-4b71bab212b8)
+
+![image](https://github.com/Studiegruppe-11/ADBIS/assets/79728659/f16985b6-8282-4a35-bcf5-f5d9ac0e9f40)
+
 ## Forklaring af applikation
 
 Applikationen er en del af et større systemdesign, der bl.a. håndterer booking af mødelokaler, ordrehåndtering (samt køkken) og automatisk generering af arbejdsopgaver (for tjenere). Denne del af applikationen håndterer booking, allokering af mødelokaler, samt generering af gængse opgaver for tjenere baseret på informationer fra ordren og angivent tidsforbrug.
