@@ -28,7 +28,7 @@ Følgende dependencies er nødvændige for at kunne køre applikationen. Alle ka
 
 ## Funktionatlitet
 
-* For at lægge en ordre, indtasten efterspurgte oplysninger på "http://localhost:3000/" og der trkkes på "Opret ordre".
+* For at lægge en ordre, indtasten efterspurgte oplysninger på "http://localhost:3000/" og der trykkes på "Opret ordre".
 * Herefter kan man med "Admin Links" i menuen i navigationsbjælken og se generet information på diverse endpoints.
 * Da der ikke er inkluderet socket i denne app, skal andre endpoints genindlæses for at vise ændringer i databasen, som hvis du fx placerer en ny ordre.
 
