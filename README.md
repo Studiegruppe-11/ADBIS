@@ -31,7 +31,7 @@ Følgende dependencies er nødvændige for at kunne køre applikationen. Alle ka
 * For at lægge en ordre, indtasten efterspurgte oplysninger på "http://localhost:3000/" og der trykkes på "Opret ordre".
 * Herefter kan man med "Admin Links" i menuen i navigationsbjælken og se generet information på diverse endpoints.
 ~~* Da der ikke er inkluderet socket i denne app, skal andre endpoints genindlæses for at vise ændringer i databasen, som hvis du fx placerer en ny ordre.~~
-** Der er nu implementeret socket på 3 hovedsider.
+  * Der er nu implementeret socket på 3 hovedsider.
 
 ## OBS
 * Databasen kan blive fyldt op, hvis der ikke er flere ledige lokaler for dagen. Hvis det er tilfældet, så uncomment nedenstående linjer i "root/sql/create_tables.sql" (fjern de 2 streger ved hver linje eller marker teksten og brug "ctrl + k + u") og genstart server.js. Det sletter alle tabeller ved genstart.
