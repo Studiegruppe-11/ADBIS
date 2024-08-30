@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tasks</title>
+</head>
+<body>
+    <h1>Order Tasks</h1>
+    <div id="orderTasks"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="socket-handler.js"></script>
+    <script src="updateFunctions.js"></script>
+    <script src="script.js"></script>
+    <script>
+        updateOrderTasksList();
+        initializeSocketListeners();
+    </script>
+</body>
+</html>

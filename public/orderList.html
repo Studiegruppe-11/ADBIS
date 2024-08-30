@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order List</title>
+    <link rel="stylesheet" href="tasksStyle.css">
+</head>
+<body>
+    <header>
+        <img src="\img\DI logo 2400x1330_u_txt.png" alt="" class="siteLogo">
+        <div class="right-header">
+            <div class="user-info">
+                <span>John</span>
+                <button id="adminButton">Admin Links</button>
+                <button>Log ud</button>
+            </div>
+        </div>
+    </header>
+    <div id="adminLinks" class="admin-links" style="display: none;">
+        <a href="/">Place Order</a>
+        <a href="/orders">See Orders</a>
+        <a href="/api/rooms">See Rooms</a>
+        <a href="/tasks">See Tasks</a>
+        <a href="/orderRoom">See Order-Room</a>
+        <a href="/api/tasks/order-tasks">See Order-Task</a>
+    </div>
+    <div class="container">
+        <div class="box">
+            <h1>Order List</h1>
+            <ul id="orderList"></ul>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="socket-handler.js"></script>
+    <script src="updateFunctions.js"></script>
+    <script src="script.js"></script>
+    <div id="orderModal" class="modal">
+        <div id="modalContent" class="modal-content"></div>
+    </div>
+</body>
+</html>
